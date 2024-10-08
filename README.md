@@ -3,13 +3,13 @@
 ### Gemaakt door:
 **Simon Klaren**
 
-Dit project is ontwikkeld door Simon Klaren. Voor vragen of opmerkingen kun je contact opnemen via simon@******.nl.
+Dit project is ontwikkeld door Simon Klaren. Voor vragen of opmerkingen kun je contact opnemen simonklaren.nl.
 
 Deze Car Rental API biedt de mogelijkheid om voertuigen te beheren. De API ondersteunt volledige CRUD-functionaliteit (Create, Read, Update, Delete) en is ontwikkeld met Ktor en Kotlin.
 
 ### Functionaliteiten:
 - Voertuigen toevoegen, opvragen, bijwerken en verwijderen.
-- In-memory opslag van voertuiggegevens.
+- Toepassing van Ktor Exposed voor de opslag van voertuiggegevens.
 - API-endpoints in JSON-formaat.
 
 ### Overzicht van de API-routes:
