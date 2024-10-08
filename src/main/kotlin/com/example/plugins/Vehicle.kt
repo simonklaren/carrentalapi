@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Vehicle(
-    val id: Int,
+    val id: Int = 0, // Zorg dat de ID een standaardwaarde heeft (anders kan deze error veroorzaken)
     val brand: String,
     val model: String,
-    val type: String,  // ICE, BEV, FCEV
+    val type: String,
     val pricePerDay: Double
 )
 
