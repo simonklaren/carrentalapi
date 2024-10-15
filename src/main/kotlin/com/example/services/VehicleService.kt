@@ -1,7 +1,7 @@
 package com.example.services
 
 import com.example.plugins.Vehicle
-import com.example.VehicleTable
+import com.example.models.VehicleTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
