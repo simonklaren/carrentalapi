@@ -23,7 +23,22 @@ fun Application.configureRouting() {
 
         // POST: Maak een account aan
         post("/signup") {
-            call.respondText("User registered successfully")
+            println("Incoming POST request...")
+            val userRegistration = try {
+                call.receive<UserRegistrationDto>()
+            } catch (e: Exception) {
+                println("Failed to parse request body: ${e.message}")
+                return@post call.respondText("Invalid data format", status = io.ktor.http.HttpStatusCode.BadRequest)
+            }
+
+            // Check of gebruiker al bestaat en sla anders op
+            val result = userService.addUser(userRegistration)
+
+            if (result != null) {
+                call.respond(HttpStatusCode.Created, "User successfully created with id: $result")
+            } else {
+                call.respond(HttpStatusCode.Conflict, "User with this email already exists")
+            }
         }
 
         // GET: Haal alle voertuigen op

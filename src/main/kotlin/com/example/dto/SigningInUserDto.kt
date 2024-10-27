@@ -1,4 +1,6 @@
 package com.example.dto
 
-class SigningInUserDto {
-}
+class SigningInUserDto (
+    val email: String,
+    val password: String
+)

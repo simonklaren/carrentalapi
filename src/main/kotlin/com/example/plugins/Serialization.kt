@@ -20,7 +20,7 @@ fun Application.configureSerialization() {
 
 @Serializable
 data class User(
-    val username: String,
+    val email: String,
     val password: String
 )
 
@@ -31,10 +31,4 @@ data class Vehicle(
     val model: String,
     val type: String,
     val pricePerDay: Double
-)
-
-@Serializable
-data class VehicleResponse(
-    val message: String,
-    val vehicle: Vehicle
 )

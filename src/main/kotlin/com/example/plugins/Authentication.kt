@@ -2,6 +2,9 @@ package com.example.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.dto.SigningInUserDto
+import com.example.services.UserService
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -40,27 +43,40 @@ fun Application.configureAuthentication() {
 
 
     routing {
+        val userService = UserService()
+
         post("/login") {
-            val user = call.receive<User>()
-            // Check username and password
-            // ...
-            val token = JWT.create()
-                .withAudience(audience)
-                .withIssuer(issuer)
-                .withClaim("email", user.username)
-                .withClaim("password", user.password)
-                .withClaim("realm", "access to upload")
-                .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                .sign(Algorithm.HMAC256(secret))
-            call.respond(token)
+            // check if user exists
+            val user = call.receive<SigningInUserDto>()
+
+            // Authenticate user
+            val isAuthentzicated = userService.authenticateUser(user.email, user.password)
+
+            if (isAuthenticated) {
+                // Als authenticatie succesvol is stuur jwt token
+                val token = JWT.create()
+                    .withAudience(audience)
+                    .withIssuer(issuer)
+                    .withClaim("email", user.email)
+                    .withClaim("password", user.password)
+                    .withClaim("realm", "access to upload")
+                    .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+                    .sign(Algorithm.HMAC256(secret))
+                call.respond(token)
+
+            } else {
+                call.respond(HttpStatusCode.Unauthorized, "Invalid email or password")
+            }
+
         }
 
         authenticate("auth-jwt") {
             get("/me") {
                 val principal = call.principal<JWTPrincipal>()
-                val username = principal!!.payload.getClaim("username").asString()
+                val username = principal!!.payload.getClaim("email").asString()
+                val realm = principal!!.payload.getClaim("realm").asString()
                 val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-                call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
+                call.respondText("Hello, $username! Token is expired at $expiresAt ms. You have $realm")
             }
         }
     }
