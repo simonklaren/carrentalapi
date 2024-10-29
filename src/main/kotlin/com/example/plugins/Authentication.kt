@@ -2,7 +2,6 @@ package com.example.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.dto.SigningInUserDto
 import com.example.services.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -53,7 +52,7 @@ fun Application.configureAuthentication() {
         // Route voor inloggen; hier kan de gebruiker inloggen en, als succesvol, een JWT-token ontvangen.
         post("/login") {
             // Ontvangt gebruikersgegevens (zoals email en wachtwoord) van de request body
-            val user = call.receive<SigningInUserDto>()
+            val user = call.receive<User>()
 
             // Controleer of de gebruiker kan worden geauthenticeerd met de `authenticateUser` functie in `UserService`
             val isAuthenticated = userService.authenticateUser(user.email, user.password)

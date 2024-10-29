@@ -8,7 +8,6 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.http.content.*
 import io.ktor.utils.io.*
-import com.example.dto.*
 import io.ktor.http.*
 import java.io.File
 
@@ -28,9 +27,9 @@ fun Application.configureRouting() {
         post("/signup") {
             println("Incoming POST request...") // Logbericht voor debugging, toont dat er een verzoek binnenkomt
 
-            // Probeer de body van de aanvraag te lezen en om te zetten naar een UserRegistrationDto object.
-            val userRegistration = try {
-                call.receive<UserRegistrationDto>() // Leest JSON-data en converteert deze naar een UserRegistrationDto object
+            // Probeer de body van de aanvraag te lezen en om te zetten naar een User object.
+            val user = try {
+                call.receive<User>() // Leest JSON-data en converteert deze naar een User object
             } catch (e: Exception) {
                 // Als de data niet correct is (bijv. ontbrekende velden), stuur dan een foutmelding terug naar de client
                 println("Failed to parse request body: ${e.message}") // Logt de foutmelding
@@ -39,7 +38,7 @@ fun Application.configureRouting() {
 
             // Voeg de gebruiker toe aan de database via `userService`.
             // Als `result` niet `null` is, betekent dit dat de gebruiker succesvol is aangemaakt.
-            val result = userService.addUser(userRegistration)
+            val result = userService.addUser(user)
 
             if (result != null) {
                 // Stuur een succesbericht terug naar de client, inclusief het nieuwe gebruikers-ID

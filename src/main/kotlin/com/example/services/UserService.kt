@@ -1,7 +1,7 @@
 package com.example.services
 
-import com.example.dto.UserRegistrationDto
 import com.example.models.UserTable
+import com.example.plugins.User
 import com.example.utils.* // Voor utilities zoals hashing
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -13,7 +13,7 @@ import org.mindrot.jbcrypt.BCrypt // Voor het veilig hashen van wachtwoorden
 class UserService {
 
     // Functie om een nieuwe gebruiker toe te voegen. Deze functie slaat het wachtwoord veilig versleuteld op.
-    fun addUser(user: UserRegistrationDto): Int? = transaction {
+    fun addUser(user: User): Int? = transaction {
         // Controleer of er al een gebruiker bestaat met hetzelfde e-mailadres
         val existingUser = UserTable.select { UserTable.email eq user.email }.singleOrNull()
 
