@@ -19,6 +19,14 @@ object VehicleTable : Table("vehicles") {
     // Kolom "pricePerDay": een double-waarde die de prijs per dag voor het huren van het voertuig aangeeft.
     val pricePerDay = double("price_per_day") // Dagelijkse prijs
 
+    val color = varchar("color", 255)
+
+    val imageURL = varchar("image_url", 255)
+
+    val rentDateFrom = varchar("rent_date_from", 255)
+
+    val rentDateTo = varchar("rent_date_to", 255)
+
     // Stelt de primaire sleutel van de tabel in, waarbij "id" de unieke identifier is voor elke rij in de "vehicles" tabel.
     override val primaryKey = PrimaryKey(id) // Primaire sleutel is ID
 }

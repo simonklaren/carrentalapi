@@ -18,7 +18,11 @@ class VehicleService {
                 brand = row[VehicleTable.brand], // Haal het merk op
                 model = row[VehicleTable.model], // Haal het model op
                 type = row[VehicleTable.type], // Haal het type op
-                pricePerDay = row[VehicleTable.pricePerDay] // Haal de prijs per dag op
+                pricePerDay = row[VehicleTable.pricePerDay], // Haal de prijs per dag op
+                color = row[VehicleTable.color],
+                imageURL = row[VehicleTable.imageURL],
+                rentDateFrom = row[VehicleTable.rentDateFrom],
+                rentDateTo = row[VehicleTable.rentDateTo]
             )
         }
     }
@@ -31,6 +35,10 @@ class VehicleService {
             row[model] = vehicle.model // Model van het voertuig
             row[type] = vehicle.type // Type voertuig, zoals benzine of elektrisch
             row[pricePerDay] = vehicle.pricePerDay // Prijs per dag voor het voertuig
+            row[color] = vehicle.color
+            row[imageURL] = vehicle.imageURL
+            row[rentDateFrom] = vehicle.rentDateFrom
+            row[rentDateTo] = vehicle.rentDateTo
         } get VehicleTable.id // Haal het ID van het nieuw toegevoegde voertuig op
 
         // Maak een kopie van het voertuig met het nieuwe ID en geef dit terug
@@ -45,6 +53,10 @@ class VehicleService {
             row[model] = vehicle.model // Werk het model bij
             row[type] = vehicle.type // Werk het type bij
             row[pricePerDay] = vehicle.pricePerDay // Werk de prijs per dag bij
+            row[color] = vehicle.color
+            row[imageURL] = vehicle.imageURL
+            row[rentDateFrom] = vehicle.rentDateFrom
+            row[rentDateTo] = vehicle.rentDateTo
         } > 0 // Controleer of er ten minste één record is bijgewerkt; retourneert `true` als succesvol
     }
 

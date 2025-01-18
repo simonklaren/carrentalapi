@@ -6,6 +6,9 @@ import io.ktor.server.plugins.contentnegotiation.*
 import kotlinx.serialization.Serializable
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.javatime.Date
+import java.time.Instant
+import java.time.LocalDate
 
 // Functie om JSON-serialisatie in te stellen in de applicatie
 // Dit zorgt ervoor dat data automatisch wordt omgezet naar JSON-formaat bij het verzenden en ontvangen
@@ -39,5 +42,10 @@ data class Vehicle(
     val brand: String, // Merk van het voertuig
     val model: String, // Model van het voertuig
     val type: String, // Type voertuig, bijvoorbeeld ICE (benzine), BEV (elektrisch), etc.
-    val pricePerDay: Double // De prijs per dag voor het huren van het voertuig
+    val pricePerDay: Double, // De prijs per dag voor het huren van het voertuig
+    val color: String,
+    val imageURL: String = "",
+    val rentDateFrom: String,
+    val rentDateTo: String
+
 )
