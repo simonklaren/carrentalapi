@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import io.ktor.http.content.*
 import io.ktor.utils.io.*
 import io.ktor.http.*
+import io.ktor.server.http.content.*
 import java.io.File
 
 // Functie om het pad te verkrijgen waar afbeeldingen worden geüpload
@@ -107,14 +108,7 @@ fun Application.configureRouting() {
         }
 
         // POST-aanvraag: Upload een afbeelding voor een specifiek voertuig, op basis van voertuig-ID
-        post("/vehicles/{id}/upload") {
-            // Verkrijg het voertuig-ID uit de URL-parameters en zet om naar een integer
-            val vehicleId = call.parameters["id"]?.toIntOrNull()
-            if (vehicleId == null) {
-                // Stuur een foutmelding als het ID niet geldig is
-                call.respondText("Invalid vehicle ID")
-                return@post
-            }
+        post("vehicles/images/upload") {
 
             // Variabele voor de naam van het geüploade bestand
             var imageFileName = ""
@@ -131,10 +125,10 @@ fun Application.configureRouting() {
                     val fileBytes = part.provider().toByteArray()
 
                     // Bepaal de volledige bestandslocatie voor opslag
-                    val filePath = "uploads/vehicles/$vehicleId/$imageFileName"
+                    val filePath = "uploads/$imageFileName"
 
-                    // Maak een map aan voor het voertuig-ID als deze nog niet bestaat
-                    val directory = File("uploads/vehicles/$vehicleId")
+                    val directory = File("uploads/")
+
                     if (!directory.exists()) {
                         directory.mkdirs() // Creëert de map en tussenliggende mappen als die er nog niet zijn
                     }
@@ -148,13 +142,30 @@ fun Application.configureRouting() {
 
             // Controleer of het bestand is geüpload en stuur een succes- of foutmelding terug
             if (imageFileName.isNotEmpty()) {
-                call.respond(
-                    HttpStatusCode.OK,
-                    "$imageFileName is uploaded to ${getImageUploadPath(imageFileName)}"
-                )
+                call.respond(HttpStatusCode.OK, getImageUploadPath(imageFileName))
             } else {
                 call.respondText("Image not uploaded, something went wrong")
             }
         }
+
+        route("/uploads") {
+            get("/{imageName}") {
+                val imageName = call.parameters["imageName"] // Haal de naam van de afbeelding op uit de URL
+                if (imageName.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest, "Afbeeldingsnaam ontbreekt")
+                    return@get
+                }
+
+                val file = File("uploads/$imageName") // Pad naar de geüploade bestanden
+
+                if (file.exists() && file.isFile) {
+                    call.respondFile(file) // Stuur het bestand terug als response
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Afbeelding niet gevonden")
+                }
+            }
+        }
+
+
     }
 }

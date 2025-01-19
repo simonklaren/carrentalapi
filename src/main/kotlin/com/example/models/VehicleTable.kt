@@ -17,7 +17,7 @@ object VehicleTable : Table("vehicles") {
     val type = varchar("type", 20) // Type voertuig (ICE, BEV, etc.)
 
     // Kolom "pricePerDay": een double-waarde die de prijs per dag voor het huren van het voertuig aangeeft.
-    val pricePerDay = double("price_per_day") // Dagelijkse prijs
+    val pricePerDay = integer("price_per_day") // Dagelijkse prijs
 
     val color = varchar("color", 255)
 

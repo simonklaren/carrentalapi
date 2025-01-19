@@ -42,7 +42,7 @@ data class Vehicle(
     val brand: String, // Merk van het voertuig
     val model: String, // Model van het voertuig
     val type: String, // Type voertuig, bijvoorbeeld ICE (benzine), BEV (elektrisch), etc.
-    val pricePerDay: Double, // De prijs per dag voor het huren van het voertuig
+    val pricePerDay: Int, // De prijs per dag voor het huren van het voertuig
     val color: String,
     val imageURL: String = "",
     val rentDateFrom: String,
