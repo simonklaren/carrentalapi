@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.models.UserTable.password
 import com.example.services.VehicleService
 import com.example.services.UserService
 import io.ktor.server.application.*
@@ -43,11 +44,36 @@ fun Application.configureRouting() {
 
             if (result != null) {
                 // Stuur een succesbericht terug naar de client, inclusief het nieuwe gebruikers-ID
-                call.respond(HttpStatusCode.Created, "User successfully created with id: $result")
+                call.respond(HttpStatusCode.Created, "User successfully created with id: $result" )
             } else {
                 // Stuur een foutmelding als de gebruiker al bestaat in de database (e-mail moet uniek zijn)
                 call.respond(HttpStatusCode.Conflict, "User with this email already exists")
             }
+        }
+
+        post("/login"){
+            // van de data op
+            println("Incoming POST request...") // Logbericht voor debugging, toont dat er een verzoek binnenkomt
+
+            // Probeer de body van de aanvraag te lezen en om te zetten naar een User object.
+            val user = try {
+                call.receive<User>() // Leest JSON-data en converteert deze naar een User object
+            } catch (e: Exception) {
+                // Als de data niet correct is (bijv. ontbrekende velden), stuur dan een foutmelding terug naar de client
+                println("Failed to parse request body: ${e.message}") // Logt de foutmelding
+                return@post call.respondText("Invalid data format", status = HttpStatusCode.BadRequest)
+            }
+
+            val result = userService.authenticateUser(
+                email = user.email,
+                password = user.password
+            )
+            if (result != null) {
+                call.respond(HttpStatusCode.OK, "User successfully authenticated")
+            } else{
+                call.respond(HttpStatusCode.BadRequest, "User with this email does not exist")
+            }
+
         }
 
         // GET-aanvraag: Haal alle voertuigen op
