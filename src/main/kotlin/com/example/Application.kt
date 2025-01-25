@@ -61,7 +61,9 @@ fun Application.seedDatabase() {
                         color = "Color(1.0, 0.0, 0.0, 1.0, sRGB IEC61966-2.1)",
                         imageURL = "uploads/upload1250559315408875231.jpg",
                         rentDateFrom = "03-03-2025",
-                        rentDateTo = "14-03-2025"
+                        rentDateTo = "14-03-2025",
+                        lat = 4.5900026,
+                        long = 51.5799477,
                     ),
                     Vehicle(
                         id = 2,
@@ -72,7 +74,9 @@ fun Application.seedDatabase() {
                         color = "Color(0.0, 0.0, 1.0, 1.0, sRGB IEC61966-2.1)",
                         imageURL = "uploads/upload3551636757534789668.jpg",
                         rentDateFrom = "03-02-2025",
-                        rentDateTo = "21-02-2025"
+                        rentDateTo = "21-02-2025",
+                        lat = 4.5900026,
+                        long = 51.5799477,
                     ),
                     Vehicle(
                         id = 3,
@@ -83,7 +87,9 @@ fun Application.seedDatabase() {
                         color = "Color(1.0, 1.0, 1.0, 1.0, sRGB IEC61966-2.1)",
                         imageURL = "uploads/upload2733683574846092242.jpg",
                         rentDateFrom = "27-01-2025",
-                        rentDateTo = "24-02-2025"
+                        rentDateTo = "24-02-2025",
+                        lat = 4.5900026,
+                        long = 51.5799477,
                     )
                     // Voeg meer voertuigen toe als nodig
                 ).forEach { vehicle ->
@@ -96,6 +102,8 @@ fun Application.seedDatabase() {
                         it[imageURL] = vehicle.imageURL
                         it[rentDateFrom] = vehicle.rentDateFrom
                         it[rentDateTo] = vehicle.rentDateTo
+                        it[lat] = vehicle.lat
+                        it[long] = vehicle.long
                     }
                 }
                 environment.log.info("Database seeded with default vehicles.")

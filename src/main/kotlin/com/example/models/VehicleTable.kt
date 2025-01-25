@@ -27,6 +27,9 @@ object VehicleTable : Table("vehicles") {
 
     val rentDateTo = varchar("rent_date_to", 255)
 
+    val lat  = double("lat")
+    val long  = double("long")
+
     // Stelt de primaire sleutel van de tabel in, waarbij "id" de unieke identifier is voor elke rij in de "vehicles" tabel.
     override val primaryKey = PrimaryKey(id) // Primaire sleutel is ID
 }

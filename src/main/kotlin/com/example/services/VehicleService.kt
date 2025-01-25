@@ -22,7 +22,9 @@ class VehicleService {
                 color = row[VehicleTable.color],
                 imageURL = row[VehicleTable.imageURL],
                 rentDateFrom = row[VehicleTable.rentDateFrom],
-                rentDateTo = row[VehicleTable.rentDateTo]
+                rentDateTo = row[VehicleTable.rentDateTo],
+                lat = row[VehicleTable.lat],
+                long = row[VehicleTable.long],
             )
         }
     }
@@ -39,6 +41,8 @@ class VehicleService {
             row[imageURL] = vehicle.imageURL
             row[rentDateFrom] = vehicle.rentDateFrom
             row[rentDateTo] = vehicle.rentDateTo
+            row[lat] = vehicle.lat
+            row[long] = vehicle.long
         } get VehicleTable.id // Haal het ID van het nieuw toegevoegde voertuig op
 
         // Maak een kopie van het voertuig met het nieuwe ID en geef dit terug
@@ -57,6 +61,8 @@ class VehicleService {
             row[imageURL] = vehicle.imageURL
             row[rentDateFrom] = vehicle.rentDateFrom
             row[rentDateTo] = vehicle.rentDateTo
+            row[lat] = vehicle.lat
+            row[long] = vehicle.lat
         } > 0 // Controleer of er ten minste één record is bijgewerkt; retourneert `true` als succesvol
     }
 

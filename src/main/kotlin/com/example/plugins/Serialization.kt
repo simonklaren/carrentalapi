@@ -46,6 +46,8 @@ data class Vehicle(
     val color: String,
     val imageURL: String = "",
     val rentDateFrom: String,
-    val rentDateTo: String
+    val rentDateTo: String,
+    val lat: Double,
+    val long: Double,
 
 )
