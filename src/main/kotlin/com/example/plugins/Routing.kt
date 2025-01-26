@@ -1,6 +1,5 @@
 package com.example.plugins
 
-import com.example.models.UserTable.password
 import com.example.services.VehicleService
 import com.example.services.UserService
 import io.ktor.server.application.*
@@ -10,7 +9,6 @@ import io.ktor.server.routing.*
 import io.ktor.http.content.*
 import io.ktor.utils.io.*
 import io.ktor.http.*
-import io.ktor.server.http.content.*
 import java.io.File
 
 // Functie om het pad te verkrijgen waar afbeeldingen worden geüpload
@@ -70,6 +68,7 @@ fun Application.configureRouting() {
             )
             if (result != null) {
                 call.respond(HttpStatusCode.OK, "User successfully authenticated")
+                
             } else{
                 call.respond(HttpStatusCode.BadRequest, "User with this email does not exist")
             }
@@ -80,6 +79,14 @@ fun Application.configureRouting() {
         get("/vehicles") {
             // Roep de service aan om alle voertuigen uit de database te halen en stuur deze als antwoord terug
             call.respond(vehicleService.getAllVehicles())
+        }
+
+        // GET-aanvraag: Voertuig bij ID
+        get("/vehicles/{id}") {
+
+            val id = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText("Invalid ID", status = HttpStatusCode.BadRequest)
+            // get the vehicle by id here and return this vhehicle
+            call.respond(vehicleService.getVehicleByIdV2(id))
         }
 
         // POST-aanvraag: Voeg een nieuw voertuig toe

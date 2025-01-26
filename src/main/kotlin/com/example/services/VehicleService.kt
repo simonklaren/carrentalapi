@@ -29,6 +29,31 @@ class VehicleService {
         }
     }
 
+    // getVehicle by id
+    fun getVehicleById(id: Int): Boolean = transaction {
+       // return the json with this veheicle
+        VehicleTable.select { VehicleTable.id eq id }.empty().not()
+    }
+
+    fun getVehicleByIdV2(id: Int, ): List<Vehicle> = transaction {
+        VehicleTable.select{ VehicleTable.id eq id }.map { row ->
+            Vehicle(
+                id = row[VehicleTable.id],
+                brand = row[VehicleTable.brand],
+                model = row[VehicleTable.model],
+                type = row[VehicleTable.type],
+                pricePerDay = row[VehicleTable.pricePerDay],
+                color = row[VehicleTable.color],
+                imageURL = row[VehicleTable.imageURL],
+                rentDateFrom = row[VehicleTable.rentDateFrom],
+                rentDateTo = row[VehicleTable.rentDateTo],
+                lat = row[VehicleTable.lat],
+                long = row[VehicleTable.long],
+            )
+
+        }
+
+    }
     // Functie om een nieuw voertuig toe te voegen aan de database
     fun addVehicle(vehicle: Vehicle): Vehicle = transaction {
         // Voeg een nieuw record toe aan de VehicleTable
