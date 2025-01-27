@@ -68,7 +68,6 @@ fun Application.configureRouting() {
             )
             if (result != null) {
                 call.respond(HttpStatusCode.OK, "User successfully authenticated")
-                
             } else{
                 call.respond(HttpStatusCode.BadRequest, "User with this email does not exist")
             }

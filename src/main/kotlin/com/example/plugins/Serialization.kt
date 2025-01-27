@@ -6,9 +6,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import kotlinx.serialization.Serializable
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.jetbrains.exposed.sql.javatime.Date
-import java.time.Instant
-import java.time.LocalDate
+import org.jetbrains.exposed.sql.Column
 
 // Functie om JSON-serialisatie in te stellen in de applicatie
 // Dit zorgt ervoor dat data automatisch wordt omgezet naar JSON-formaat bij het verzenden en ontvangen
@@ -39,6 +37,7 @@ data class User(
 @Serializable
 data class Vehicle(
     val id: Int = 0, // ID met een standaardwaarde van 0; handig bij het toevoegen van nieuwe voertuigen
+    val email: String,
     val brand: String, // Merk van het voertuig
     val model: String, // Model van het voertuig
     val type: String, // Type voertuig, bijvoorbeeld ICE (benzine), BEV (elektrisch), etc.
@@ -49,5 +48,4 @@ data class Vehicle(
     val rentDateTo: String,
     val lat: Double,
     val long: Double,
-
-)
+    )

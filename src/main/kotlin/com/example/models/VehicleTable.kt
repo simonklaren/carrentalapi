@@ -7,6 +7,8 @@ object VehicleTable : Table("vehicles") {
     // Kolom "id": een uniek, automatisch oplopend geheel getal dat elk voertuig identificeert.
     val id = integer("id").autoIncrement() // Unieke ID, auto-increment
 
+    val email = text("email")
+
     // Kolom "brand": een tekstveld om het merk van het voertuig op te slaan, met een maximale lengte van 50 tekens.
     val brand = varchar("brand", 50) // Merk van het voertuig
 

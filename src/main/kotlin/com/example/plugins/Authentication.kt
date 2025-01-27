@@ -2,6 +2,7 @@ package com.example.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.models.UserTable
 import com.example.services.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -85,9 +86,10 @@ fun Application.configureAuthentication() {
                 val username = principal!!.payload.getClaim("email").asString() // Verkrijg de email uit het token
                 val realm = principal.payload.getClaim("realm").asString() // Verkrijg de rechten van de gebruiker
                 val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis()) // Bereken de resterende tijd tot het token verloopt
-
+                // stuur ook het id mee
+//                val id = principal.payload.getClaim("id").asInt()
                 // Stuur een bericht terug naar de gebruiker met hun email, token-vervaltijd en toegangsrechten
-                call.respondText("Hello, $username! Token is expired at $expiresAt ms. You have $realm")
+                call.respondText("username $username, realm $realm, expires $expiresAt")
             }
         }
     }

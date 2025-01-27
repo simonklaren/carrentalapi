@@ -15,6 +15,7 @@ class VehicleService {
         VehicleTable.selectAll().map { row ->
             Vehicle(
                 id = row[VehicleTable.id], // Haal het ID op uit de database
+                email = row[VehicleTable.email],
                 brand = row[VehicleTable.brand], // Haal het merk op
                 model = row[VehicleTable.model], // Haal het model op
                 type = row[VehicleTable.type], // Haal het type op
@@ -39,6 +40,7 @@ class VehicleService {
         VehicleTable.select{ VehicleTable.id eq id }.map { row ->
             Vehicle(
                 id = row[VehicleTable.id],
+                email = row[VehicleTable.email],
                 brand = row[VehicleTable.brand],
                 model = row[VehicleTable.model],
                 type = row[VehicleTable.type],
@@ -58,6 +60,7 @@ class VehicleService {
     fun addVehicle(vehicle: Vehicle): Vehicle = transaction {
         // Voeg een nieuw record toe aan de VehicleTable
         val id = VehicleTable.insert { row ->
+            row[email] = vehicle.email
             row[brand] = vehicle.brand // Merk van het voertuig
             row[model] = vehicle.model // Model van het voertuig
             row[type] = vehicle.type // Type voertuig, zoals benzine of elektrisch
@@ -78,6 +81,7 @@ class VehicleService {
     fun updateVehicle(id: Int, vehicle: Vehicle): Boolean = transaction {
         // Update het voertuig in de database waar het ID overeenkomt met het opgegeven ID
         VehicleTable.update({ VehicleTable.id eq id }) { row ->
+            row[email] = vehicle.email
             row[brand] = vehicle.brand // Werk het merk bij
             row[model] = vehicle.model // Werk het model bij
             row[type] = vehicle.type // Werk het type bij

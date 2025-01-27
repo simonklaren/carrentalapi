@@ -54,6 +54,7 @@ fun Application.seedDatabase() {
                 listOf(
                     Vehicle(
                         id = 1,
+                        email = "sjoerd@email.nl",
                         brand = "Ford",
                         model = "Mustang",
                         type = "BEV",
@@ -67,6 +68,7 @@ fun Application.seedDatabase() {
                     ),
                     Vehicle(
                         id = 2,
+                        email = "sjoerd@email.nl",
                         brand = "Lamborgini",
                         model = "Urus",
                         type = "BEV",
@@ -80,6 +82,7 @@ fun Application.seedDatabase() {
                     ),
                     Vehicle(
                         id = 3,
+                        email = "simon@email.nl",
                         brand = "Audi",
                         model = "Rs6",
                         type = "BEV",
@@ -94,6 +97,7 @@ fun Application.seedDatabase() {
                     // Voeg meer voertuigen toe als nodig
                 ).forEach { vehicle ->
                     VehicleTable.insert {
+                        it[email] = vehicle.email
                         it[brand] = vehicle.brand
                         it[model] = vehicle.model
                         it[type] = vehicle.type
