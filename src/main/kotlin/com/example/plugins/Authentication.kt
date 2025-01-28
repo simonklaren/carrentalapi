@@ -63,6 +63,7 @@ fun Application.configureAuthentication() {
                 val token = JWT.create()
                     .withAudience(audience) // Voeg de audience claim toe aan het token
                     .withIssuer(issuer) // Voeg de issuer claim toe aan het token
+                    .withClaim("user_id", user.id)
                     .withClaim("email", user.email) // Voeg de email van de gebruiker toe als een claim
                     .withClaim("password", user.password) // Voeg het wachtwoord toe als een claim (alleen in een beveiligde omgeving)
                     .withClaim("realm", "access to upload") // Geef het domein van rechten aan
@@ -83,13 +84,14 @@ fun Application.configureAuthentication() {
 
                 // `!!` wordt hier gebruikt om aan te geven dat `principal` niet null mag zijn; als het wel null is, wordt een fout veroorzaakt.
                 // `?.` wordt gebruikt bij `expiresAt` om null-veilig de vervaltijd van het token op te halen, mocht deze null zijn.
-                val username = principal!!.payload.getClaim("email").asString() // Verkrijg de email uit het token
+                val userId = principal!!.payload.getClaim("user_id").asInt()
+                val username = principal.payload.getClaim("email").asString() // Verkrijg de email uit het token
                 val realm = principal.payload.getClaim("realm").asString() // Verkrijg de rechten van de gebruiker
                 val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis()) // Bereken de resterende tijd tot het token verloopt
                 // stuur ook het id mee
 //                val id = principal.payload.getClaim("id").asInt()
                 // Stuur een bericht terug naar de gebruiker met hun email, token-vervaltijd en toegangsrechten
-                call.respondText("username $username, realm $realm, expires $expiresAt")
+                call.respondText("username $username, realm $realm, expires $expiresAt, userId $userId")
             }
         }
     }

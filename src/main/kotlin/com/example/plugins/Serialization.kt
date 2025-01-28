@@ -29,6 +29,7 @@ fun Application.configureSerialization() {
 // Met het @Serializable annotatie kan Kotlin deze data class omzetten naar JSON
 @Serializable
 data class User(
+    val id: Int,
     val email: String, // Het e-mailadres van de gebruiker
     val password: String // Het wachtwoord van de gebruiker
 )
