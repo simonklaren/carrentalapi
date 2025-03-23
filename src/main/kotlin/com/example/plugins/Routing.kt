@@ -28,8 +28,8 @@ fun Application.configureRouting() {
             println("Incoming POST request...") // Logbericht voor debugging, toont dat er een verzoek binnenkomt
 
             // Probeer de body van de aanvraag te lezen en om te zetten naar een User object.
-            val user = try {
-                call.receive<User>() // Leest JSON-data en converteert deze naar een User object
+            val UserSignup = try {
+                call.receive<UserSignup>() // Leest JSON-data en converteert deze naar een User object
             } catch (e: Exception) {
                 // Als de data niet correct is (bijv. ontbrekende velden), stuur dan een foutmelding terug naar de client
                 println("Failed to parse request body: ${e.message}") // Logt de foutmelding
@@ -38,15 +38,24 @@ fun Application.configureRouting() {
 
             // Voeg de gebruiker toe aan de database via `userService`.
             // Als `result` niet `null` is, betekent dit dat de gebruiker succesvol is aangemaakt.
-            val result = userService.addUser(user)
+            try {
+                val result = userService.addUser(UserSignup)
 
-            if (result != null) {
-                // Stuur een succesbericht terug naar de client, inclusief het nieuwe gebruikers-ID
-                call.respond(HttpStatusCode.Created, "User successfully created with id: $result" )
-            } else {
-                // Stuur een foutmelding als de gebruiker al bestaat in de database (e-mail moet uniek zijn)
-                call.respond(HttpStatusCode.Conflict, "User with this email already exists")
+                if (result != null) {
+                    // Stuur een succesbericht terug naar de client, inclusief het nieuwe gebruikers-ID
+                    call.respond(HttpStatusCode.Created, "User successfully created with id: $result")
+                } else {
+                    // Dit zou eigenlijk niet moeten gebeuren, maar vangt extra null-gevallen op
+                    call.respond(HttpStatusCode.InternalServerError, "Gebruiker kon niet worden aangemaakt.")
+                }
+            } catch (e: IllegalArgumentException) {
+                // Specifieke fout voor al bestaand account
+                call.respond(HttpStatusCode.Conflict, e.message ?: "User with this email already exists")
+            } catch (e: Exception) {
+                // Algemene foutafhandeling
+                call.respond(HttpStatusCode.InternalServerError, "Er is iets misgegaan: ${e.message}")
             }
+
         }
 
         post("/login"){

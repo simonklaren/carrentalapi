@@ -34,6 +34,12 @@ data class User(
     val password: String // Het wachtwoord van de gebruiker
 )
 
+@Serializable
+data class UserSignup(
+    val email: String, // Het e-mailadres van de gebruiker
+    val password: String // Het wachtwoord van de gebruiker
+)
+
 // Definieer een data class voor voertuigen met eigenschappen zoals merk en model
 @Serializable
 data class Vehicle(

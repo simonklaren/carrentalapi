@@ -1,7 +1,7 @@
 package com.example.services
 
 import com.example.models.UserTable
-import com.example.plugins.User
+import com.example.plugins.UserSignup
 import com.example.utils.* // Voor utilities zoals hashing
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -13,19 +13,19 @@ import org.mindrot.jbcrypt.BCrypt // Voor het veilig hashen van wachtwoorden
 class UserService {
 
     // Functie om een nieuwe gebruiker toe te voegen. Deze functie slaat het wachtwoord veilig versleuteld op.
-    fun addUser(user: User): Int? = transaction {
+    fun addUser(user: UserSignup): Unit = transaction {
         // Controleer of er al een gebruiker bestaat met hetzelfde e-mailadres
         val existingUser = UserTable.select { UserTable.email eq user.email }.singleOrNull()
 
-        if (existingUser != null) {
-            // Als de gebruiker al bestaat, geef `null` terug als indicatie van een conflict
-            null
-        } else {
+        if (existingUser == null) {
             // Voeg een nieuwe gebruiker toe aan de `UserTable`
             UserTable.insert { row ->
                 row[email] = user.email // Sla het e-mailadres op
                 row[password] = hashPassword(user.password) // Sla het gehashte wachtwoord op
-            } get UserTable.id // Geef het ID van de nieuw toegevoegde gebruiker terug
+            } get UserTable.id // Geef het ID van de nieuw toegevoegde gebruiker terug (wordt hier genegeerd)
+        } else {
+            // Gooi een fout als het e-mailadres al voorkomt in de database
+            null
         }
     }
 
